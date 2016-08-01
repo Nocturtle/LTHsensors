@@ -3,8 +3,8 @@
 
 
 #include <Arduino.h>
-#include <SoftI2CMaster.h>
-#include <Adafruit_Sensor.h>
+#include <SoftI2CMaster.h> //https://github.com/todbot/SoftI2CMaster
+#include <Adafruit_Sensor.h> //https://github.com/adafruit/Adafruit_Sensor
 
 #define HTU21DF_I2CADDR       0x40
 #define HTU21DF_READTEMP      0xE3
