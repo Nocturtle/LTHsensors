@@ -50,7 +50,7 @@ namespace Lux_Temp_Humid_Logger_HERB114a
 
         private void Xzoom_CheckedChanged(object sender, EventArgs e)
         {
-            if (Xzoom.Checked == true)
+            if (Xzoom.Checked)
             {
                 chart1.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             }
@@ -62,13 +62,25 @@ namespace Lux_Temp_Humid_Logger_HERB114a
 
         private void Yzoom_CheckedChanged(object sender, EventArgs e)
         {
-            if (Yzoom.Checked == true)
+            if (Yzoom.Checked)
             {
                 chart1.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
             }
             else
             {
                 chart1.ChartAreas[0].CursorY.IsUserSelectionEnabled = false;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(streamplot.Checked)
+            {
+                streamsamples.Enabled = true;
+            }
+            else
+            {
+                streamsamples.Enabled = false;
             }
         }
 
@@ -103,32 +115,36 @@ namespace Lux_Temp_Humid_Logger_HERB114a
                 chart1.ChartAreas[0].CursorX.Interval = 60;
                 chart1.Series.Clear();
                 textBox1.Clear();
-                go.Text = "Stop";
-                go.BackColor = System.Drawing.Color.Crimson;
-                tabPage2.Enabled = false;
                 //add series for each checked room/chamber and data type combination
-                int i = 0;
-                foreach (object chamber in List2.Items)
+                if (streamplot.Checked)
                 {
-                    int ii = 0;
-                    foreach (object datatype in List1.Items)
+                    int i = 0;
+                    foreach (object chamber in List2.Items)
                     {
-                        chart1.Series.Add(String.Concat(chamber.ToString(), " ", datatype.ToString()));
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].ChartType = SeriesChartType.Line;
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerStyle = stylelist[ii];
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerSize = 10;
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerStep = 60;
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].Color = colorlist[i];
-                        chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].XValueType = ChartValueType.DateTime;
-                        ii += 1;
+                        int ii = 0;
+                        foreach (object datatype in List1.Items)
+                        {
+                            chart1.Series.Add(String.Concat(chamber.ToString(), " ", datatype.ToString()));
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].ChartType = SeriesChartType.Line;
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerStyle = stylelist[ii];
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerSize = 10;
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].MarkerStep = 60;
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].Color = colorlist[i];
+                            chart1.Series[String.Concat(chamber.ToString(), " ", datatype.ToString())].XValueType = ChartValueType.DateTime;
+                            ii += 1;
+                        }
+                        i += 1;
                     }
-                    i += 1;
                 }
                 try
                 {
                     serialPort1.Open();
                     serialPort1.DiscardInBuffer();
                     serialPort1.WriteLine("go");
+                    go.Text = "Stop";
+                    go.BackColor = System.Drawing.Color.Crimson;
+                    tabPage2.Enabled = false;
+                    streamplot.Enabled = false;
                 }
                 catch
                 {
@@ -145,6 +161,7 @@ namespace Lux_Temp_Humid_Logger_HERB114a
                     go.Text = "Start";
                     go.BackColor = System.Drawing.Color.SpringGreen;
                     tabPage2.Enabled = true;
+                    streamplot.Enabled = true;
                 }
                 catch
                 {
@@ -166,9 +183,12 @@ namespace Lux_Temp_Humid_Logger_HERB114a
                 {
                     my_time = DateTime.Now;
                     dest = String.Concat(dest, "\\chamber", my_message[0], "_", my_time.Year.ToString(), "_", my_time.Month.ToString(), "_", my_time.Day.ToString(), ".txt");
-                    SetChart(String.Concat(my_message[0], " Lux"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("L: ") + 3, 5)));//(Convert.ToDouble(my_message.Substring(my_message.IndexOf("L1: ") + 4, 4)) + Convert.ToDouble(my_message.Substring(my_message.IndexOf("L2: ") + 4, 4))) / 2);
-                    SetChart(String.Concat(my_message[0], " Temp"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("T: ") + 3, 5)));
-                    SetChart(String.Concat(my_message[0], " Humid"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("H: ") + 3, 5)));
+                    if (streamplot.Checked)
+                    {
+                        SetChart(String.Concat(my_message[0], " Lux"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("L: ") + 3, 5)));//(Convert.ToDouble(my_message.Substring(my_message.IndexOf("L1: ") + 4, 4)) + Convert.ToDouble(my_message.Substring(my_message.IndexOf("L2: ") + 4, 4))) / 2);
+                        SetChart(String.Concat(my_message[0], " Temp"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("T: ") + 3, 5)));
+                        SetChart(String.Concat(my_message[0], " Humid"), my_time, Convert.ToDouble(my_message.Substring(my_message.IndexOf("H: ") + 3, 5)));
+                    }
                     my_message = String.Concat(my_time.ToString(), " ", my_message, "\n");
                     //byte[] my_bytes = Encoding.ASCII.GetBytes(my_message);
                     try
@@ -221,7 +241,7 @@ namespace Lux_Temp_Humid_Logger_HERB114a
             {
                 if (my_flag)
                 {
-                    while (chart1.Series[s].Points.Count > 600)
+                    while (chart1.Series[s].Points.Count > Convert.ToInt16(streamsamples.Text))
                     {
                         chart1.Series[s].Points.RemoveAt(0);
                         //chart1.Series[s].Points[0].Dispose();
@@ -323,6 +343,11 @@ namespace Lux_Temp_Humid_Logger_HERB114a
                 }
                 startDate = startDate.AddDays(1);
             }
+        }
+
+        private void streamsamples_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = !char.IsDigit(e.KeyChar); //limit to numbers only
         }
     }
 }

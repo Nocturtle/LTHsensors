@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem4 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
-            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell4 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.LegendItem legendItem3 = new System.Windows.Forms.DataVisualization.Charting.LegendItem();
+            System.Windows.Forms.DataVisualization.Charting.LegendCell legendCell3 = new System.Windows.Forms.DataVisualization.Charting.LegendCell();
             this.browse = new System.Windows.Forms.Button();
             this.data_dir = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -64,6 +64,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label9 = new System.Windows.Forms.Label();
+            this.streamplot = new System.Windows.Forms.CheckBox();
+            this.streamsamples = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -103,24 +106,24 @@
             // 
             // chart1
             // 
-            chartArea4.AxisX.LabelStyle.Format = "MM/dd HH:mm:ss";
-            chartArea4.AxisX.Title = "Time";
-            chartArea4.AxisX.TitleAlignment = System.Drawing.StringAlignment.Far;
-            chartArea4.CursorX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
-            chartArea4.CursorX.IsUserEnabled = true;
-            chartArea4.CursorX.IsUserSelectionEnabled = true;
-            chartArea4.CursorX.LineColor = System.Drawing.Color.DarkGray;
-            chartArea4.CursorY.IsUserEnabled = true;
-            chartArea4.CursorY.IsUserSelectionEnabled = true;
-            chartArea4.CursorY.LineColor = System.Drawing.Color.LightGray;
-            chartArea4.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea4);
+            chartArea3.AxisX.LabelStyle.Format = "MM/dd HH:mm:ss";
+            chartArea3.AxisX.Title = "Time";
+            chartArea3.AxisX.TitleAlignment = System.Drawing.StringAlignment.Far;
+            chartArea3.CursorX.IntervalType = System.Windows.Forms.DataVisualization.Charting.DateTimeIntervalType.Seconds;
+            chartArea3.CursorX.IsUserEnabled = true;
+            chartArea3.CursorX.IsUserSelectionEnabled = true;
+            chartArea3.CursorX.LineColor = System.Drawing.Color.DarkGray;
+            chartArea3.CursorY.IsUserEnabled = true;
+            chartArea3.CursorY.IsUserSelectionEnabled = true;
+            chartArea3.CursorY.LineColor = System.Drawing.Color.LightGray;
+            chartArea3.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea3);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legendCell4.Name = "A";
-            legendItem4.Cells.Add(legendCell4);
-            legend4.CustomItems.Add(legendItem4);
-            legend4.Name = "Legend";
-            this.chart1.Legends.Add(legend4);
+            legendCell3.Name = "A";
+            legendItem3.Cells.Add(legendCell3);
+            legend3.CustomItems.Add(legendItem3);
+            legend3.Name = "Legend";
+            this.chart1.Legends.Add(legend3);
             this.chart1.Location = new System.Drawing.Point(180, 0);
             this.chart1.Name = "chart1";
             this.chart1.Size = new System.Drawing.Size(612, 445);
@@ -358,6 +361,9 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label10);
+            this.tabPage1.Controls.Add(this.streamsamples);
+            this.tabPage1.Controls.Add(this.streamplot);
             this.tabPage1.Controls.Add(this.comrefresh);
             this.tabPage1.Controls.Add(this.go);
             this.tabPage1.Controls.Add(this.comports);
@@ -426,6 +432,38 @@
             this.label9.TabIndex = 6;
             this.label9.Text = "Click and Drag on chart to zoom";
             // 
+            // streamplot
+            // 
+            this.streamplot.AutoSize = true;
+            this.streamplot.Checked = true;
+            this.streamplot.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.streamplot.Location = new System.Drawing.Point(9, 36);
+            this.streamplot.Name = "streamplot";
+            this.streamplot.Size = new System.Drawing.Size(108, 17);
+            this.streamplot.TabIndex = 7;
+            this.streamplot.Text = "Plot while logging";
+            this.streamplot.UseVisualStyleBackColor = true;
+            this.streamplot.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // streamsamples
+            // 
+            this.streamsamples.Location = new System.Drawing.Point(102, 58);
+            this.streamsamples.Name = "streamsamples";
+            this.streamsamples.Size = new System.Drawing.Size(48, 20);
+            this.streamsamples.TabIndex = 8;
+            this.streamsamples.Text = "600";
+            this.streamsamples.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.streamsamples.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.streamsamples_KeyPress);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 62);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(90, 13);
+            this.label10.TabIndex = 9;
+            this.label10.Text = "# Samples to Plot";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -488,6 +526,9 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckBox streamplot;
+        private System.Windows.Forms.TextBox streamsamples;
+        private System.Windows.Forms.Label label10;
     }
 }
 
